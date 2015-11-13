@@ -34,7 +34,7 @@ android {
 
 ##Android Studio 混淆脚本
 
-由于AndroidStudio的混淆脚本和eclipse有些不——比如：android studio已经不需要-libraryjars 来声明第三方库了，否则会报库被引用两次的错误信息。
+由于AndroidStudio的混淆脚本和eclipse有些不同比如：android studio已经不需要-libraryjars 来声明第三方库了，否则会报库被引用两次的错误信息。
 此脚本仅仅是在google官方脚本[proguard-android.txt](https://android.googlesource.com/platform/tools/base/+/HEAD/files/proguard-android.txt)上增加了部分内容
 
 ##使用方法：
