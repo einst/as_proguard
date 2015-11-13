@@ -1,6 +1,6 @@
 # Android Studio Proguard
 
-##Why I wrote this script  
+##Why  wrote
 
 there are some differences between AndroidStudio and eclipse, such as: third-party library is no longer required to declare with -libraryjars,Otherwise，Android studio will throw a exception:java.io.IOException: The same input jar [xxx.jar] is specified twice.
 this script is based on google official [proguard-android.txt](https://android.googlesource.com/platform/tools/base/+/HEAD/files/proguard-android.txt),I just added some necessary content
