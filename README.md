@@ -1,4 +1,4 @@
-# AndroiStudio Proguard
+# Android Studio Proguard
 
 ##Why I wrote this script  
 
