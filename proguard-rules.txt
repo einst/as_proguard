@@ -1,0 +1,99 @@
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+-dontusemixedcaseclassnames #混淆时不会产生形形色色的类名
+-dontskipnonpubliclibraryclasses #不忽略非公共的库类
+-verbose
+# Optimization is turned off by default. Dex does not like code run
+# through the ProGuard optimize and preverify steps (and performs some
+# of these optimizations on its own).
+
+-dontoptimize #关闭优化，dex自身会进行优化
+-dontpreverify #同上
+# Note that if you want to enable optimization, you cannot just
+# include optimization flags in your own project configuration file;
+# instead you will need to point to the
+# "proguard-android-optimize.txt" file instead of this one from your
+# project.properties file.
+
+-optimizations !code/simplification/arithmetic
+
+-keepattributes Signature  #保护Signature属性
+-keepattributes *Annotation* #保护Annotation属性
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+
+-keep class * implements java.io.Serializable { *; } #序列化接口不需要混淆，否则Json.from(XXX)会出问题并且请在代码中的JavaBean中实现序列化
+
+# native方法不混淆
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# keep setters in Views so that animations can still work.
+# see http://proguard.sourceforge.net/manual/examples.html#beans
+#保护View类中的set get方法(防止如一些ObjectAnimator之类通过反射调用set get)
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
+# We want to keep methods in Activity that could be used in the XML attribute onClick()
+#保护Activity中参数是View类的方法，防止xml中的onclick()失效
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+#保护自定义控件的构造方法
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+#保护自定义控件的构造方法
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.content.Context {
+   public void *(android.view.View);
+   public void *(android.view.MenuItem);
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR;
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+################afinal##################
+# The support library contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version.  We know about them, and they are safe.
+-dontwarn android.support.**
+
+################第三方库#################
+#afinal
+-dontwarn net.tsz.afinal.**
+-keep class net.tsz.afinal.** { *; }
+-keep public class * extends net.tsz.afinal.**
+-keep public interface net.tsz.afinal.** {*;}
+-keepclasseswithmembers class net.tsz.afinal.** {
+     <fields>;
+     <methods>;
+}
+
+#butterknife
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
